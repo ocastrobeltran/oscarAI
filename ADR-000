@@ -1,0 +1,635 @@
+# Oscar AI
+
+## Documento de Arquitectura Técnica
+
+**Versión:** 1.0
+
+---
+
+# 1. Resumen Ejecutivo
+
+Oscar AI es una plataforma de inteligencia artificial personal diseñada para centralizar la gestión de proyectos, documentación, clientes, QA y automatización de procesos.
+
+El sistema será capaz de consultar múltiples fuentes de información, razonar sobre ellas utilizando diferentes modelos de IA y ejecutar acciones sobre aplicaciones externas.
+
+El objetivo no es crear un chatbot, sino un **Asistente Ejecutivo Inteligente** que actúe como apoyo permanente para la gestión diaria.
+
+---
+
+# 2. Objetivos
+
+## Objetivo General
+
+Construir una plataforma de IA modular, escalable y desacoplada que permita administrar el trabajo diario del Project Manager mediante agentes especializados.
+
+## Objetivos Específicos
+
+* Centralizar toda la información de proyectos.
+* Reducir tiempo invertido en documentación.
+* Automatizar tareas repetitivas.
+* Mejorar el seguimiento de clientes.
+* Integrar Azure DevOps, Outlook, GitHub y el sistema de Legger.
+* Crear una memoria organizacional propia.
+
+---
+
+# 3. Alcance
+
+La plataforma cubrirá inicialmente:
+
+* Gestión de proyectos
+* Gestión documental
+* Automatización
+* QA
+* Seguimiento de clientes
+* Reuniones
+* Correos
+* Cronogramas
+
+Fuera del alcance inicial:
+
+* Gestión financiera
+* Recursos Humanos
+* Nómina
+* Contabilidad
+
+---
+
+# 4. Principios Arquitectónicos
+
+## Modularidad
+
+Cada componente podrá reemplazarse sin afectar el resto.
+
+---
+
+## Independencia del proveedor de IA
+
+La plataforma podrá utilizar indistintamente:
+
+* GPT
+* Claude
+* Gemini
+* Ollama
+* OpenRouter
+
+---
+
+## API First
+
+Toda comunicación será mediante API.
+
+---
+
+## Docker First
+
+Todos los componentes deberán ejecutarse mediante contenedores.
+
+---
+
+## Security First
+
+Nunca almacenar credenciales en el código.
+
+Todo secreto irá mediante variables de entorno.
+
+---
+
+## Memory First
+
+La información histórica será el activo principal del sistema.
+
+---
+
+# 5. Arquitectura General
+
+```
+                         Usuario
+
+                            │
+
+                    Dashboard Web
+
+                            │
+
+                   API Gateway
+
+                            │
+
+                   Oscar AI Core
+
+        ┌────────────┼─────────────┐
+
+        │            │             │
+
+     Agentes     Automatización   Memoria
+
+        │            │             │
+
+      OpenClaw      n8n         Qdrant
+
+        │            │             │
+
+        └────────────┼─────────────┘
+
+                     │
+
+              PostgreSQL
+
+                     │
+
+                  Integraciones
+
+Azure DevOps
+
+Outlook
+
+GitHub
+
+Laravel
+
+Calendar
+
+Filesystem
+
+OneDrive
+```
+
+---
+
+# 6. Contenedores
+
+## Reverse Proxy
+
+Tecnología
+
+Caddy
+
+Responsabilidad
+
+* HTTPS
+* Reverse Proxy
+* Balanceo
+* Certificados
+
+---
+
+## Oscar AI Core
+
+Responsabilidad
+
+Coordinar toda la plataforma.
+
+Será el cerebro del sistema.
+
+Funciones
+
+* Gestión de agentes
+* Gestión de sesiones
+* Gestión de herramientas
+* Routing
+
+---
+
+## PostgreSQL
+
+Información estructurada.
+
+Contendrá
+
+Usuarios
+
+Clientes
+
+Proyectos
+
+Configuraciones
+
+Prompts
+
+Logs
+
+Historial
+
+---
+
+## Redis
+
+Cache
+
+Colas
+
+Locks
+
+Sesiones
+
+---
+
+## Qdrant
+
+Base vectorial.
+
+Almacenará embeddings de:
+
+Actas
+
+Correos
+
+PDF
+
+Word
+
+Excel
+
+Normativa
+
+Manual QA
+
+Historias de Usuario
+
+---
+
+## n8n
+
+Automatización.
+
+Responsable de ejecutar flujos.
+
+Ejemplo
+
+Correo
+
+↓
+
+Crear tarea
+
+↓
+
+Actualizar Azure
+
+↓
+
+Enviar Teams
+
+↓
+
+Crear minuta
+
+---
+
+# 7. Agentes
+
+## PM Agent
+
+Funciones
+
+* Estado de proyectos
+* Riesgos
+* Clientes
+* Seguimiento
+* Cronograma
+
+Herramientas
+
+Azure DevOps
+
+PostgreSQL
+
+Qdrant
+
+Outlook
+
+---
+
+## QA Agent
+
+Funciones
+
+* Casos de prueba
+* Reportes
+* Lighthouse
+* Cypress
+* Playwright
+* JMeter
+
+---
+
+## Documentation Agent
+
+Funciones
+
+* Actas
+* Contratos
+* Soluciones Técnicas
+* Minutas
+
+---
+
+## Communication Agent
+
+Funciones
+
+* Outlook
+* Teams
+* WhatsApp
+* Respuestas sugeridas
+
+---
+
+## Meeting Agent
+
+Funciones
+
+* Resumen
+* Compromisos
+* Participantes
+* Riesgos
+
+---
+
+## Legger Agent
+
+Funciones
+
+Consultar directamente
+
+* proyectos
+* tickets
+* clientes
+* empleados
+* estados
+
+---
+
+# 8. Integraciones
+
+## Azure DevOps
+
+Lectura
+
+Creación
+
+Actualización
+
+Consulta de Boards
+
+Consulta Sprint
+
+Consulta Bugs
+
+---
+
+## Outlook
+
+Lectura
+
+Clasificación
+
+Respuesta
+
+Seguimiento
+
+---
+
+## GitHub
+
+Issues
+
+Pull Requests
+
+Commits
+
+Releases
+
+---
+
+## Laravel
+
+API propia
+
+Clientes
+
+Proyectos
+
+Tickets
+
+Historial
+
+---
+
+## Calendar
+
+Eventos
+
+Disponibilidad
+
+Recordatorios
+
+---
+
+## Sistema de Archivos
+
+Documentos
+
+PDF
+
+Word
+
+Excel
+
+Imágenes
+
+---
+
+# 9. Modelo de Datos Inicial
+
+## Cliente
+
+* id
+* nombre
+* contacto
+* correo
+* estado
+
+---
+
+## Proyecto
+
+* id
+* código
+* nombre
+* cliente
+* PM
+* estado
+* riesgo
+* porcentaje
+
+---
+
+## Documento
+
+* id
+* proyecto
+* tipo
+* versión
+* ruta
+
+---
+
+## Reunión
+
+* id
+* proyecto
+* fecha
+* participantes
+* resumen
+
+---
+
+## Tarea
+
+* id
+* origen
+* responsable
+* prioridad
+* vencimiento
+
+---
+
+# 10. Seguridad
+
+Autenticación
+
+OAuth
+
+API Keys
+
+JWT
+
+---
+
+Secretos
+
+Docker Secrets
+
+Variables de entorno
+
+---
+
+Logs
+
+Auditoría
+
+Eventos
+
+Acciones
+
+---
+
+# 11. Roadmap
+
+## Sprint 1
+
+Infraestructura
+
+Docker
+
+Git
+
+Base del proyecto
+
+---
+
+## Sprint 2
+
+Oscar AI Core
+
+API
+
+Dashboard
+
+---
+
+## Sprint 3
+
+Base de conocimiento
+
+Qdrant
+
+Embeddings
+
+---
+
+## Sprint 4
+
+Azure DevOps
+
+GitHub
+
+Outlook
+
+---
+
+## Sprint 5
+
+PM Agent
+
+QA Agent
+
+Meeting Agent
+
+---
+
+## Sprint 6
+
+Dashboard Ejecutivo
+
+Indicadores
+
+Riesgos
+
+Automatizaciones
+
+---
+
+# 12. Requisitos No Funcionales
+
+Disponibilidad
+
+99%
+
+Escalabilidad
+
+Horizontal mediante Docker
+
+Mantenibilidad
+
+Arquitectura modular
+
+Portabilidad
+
+Compatible con cualquier servidor Linux
+
+Respaldo
+
+Backups automáticos diarios
+
+Seguridad
+
+Cifrado de secretos
+
+Observabilidad
+
+Logs estructurados
+
+Métricas
+
+Health Checks
+
+---
+
+# 13. Visión Final
+
+Oscar AI deberá convertirse en un asistente ejecutivo capaz de comprender el contexto completo de los proyectos, recordar decisiones tomadas meses atrás, identificar riesgos, generar documentación profesional, automatizar tareas repetitivas y asistir activamente en la gestión diaria.
+
+La plataforma no dependerá de un proveedor específico de inteligencia artificial ni de una única herramienta de orquestación. Cada componente podrá evolucionar de forma independiente, garantizando una solución sostenible, escalable y preparada para incorporar nuevas capacidades tecnológicas en el futuro.
