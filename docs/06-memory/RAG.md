@@ -22,3 +22,10 @@ flowchart LR
 - Priorizar fuentes curadas.
 - Incluir referencias al origen.
 - Evitar que la respuesta oculte incertidumbre.
+
+## Estado actual en Oscar AI
+
+- Qdrant se usa como colección `meetings` para indexar resúmenes de reuniones.
+- La búsqueda semántica inicial está soportada por `/search?q=...`.
+- El embedding actual es ligero y determinista; puede sustituirse por embeddings reales cuando el stack de modelos esté disponible.
+

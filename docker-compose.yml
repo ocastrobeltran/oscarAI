@@ -1,4 +1,29 @@
 services:
+  app:
+    build:
+      context: ./app
+    environment:
+      APP_NAME: Oscar AI
+      APP_ENV: local
+      APP_PORT: 8080
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: oscar_ai
+      POSTGRES_USER: oscar_ai
+      POSTGRES_PASSWORD: change-me
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+    depends_on:
+      - postgres
+      - redis
+      - qdrant
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+
   postgres:
     image: postgres:16-alpine
     environment:
@@ -27,6 +52,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      - app
     volumes:
       - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

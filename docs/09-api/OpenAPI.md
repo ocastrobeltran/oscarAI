@@ -39,3 +39,14 @@ paths:
 			summary: Search knowledge base
 ```
 
+## Estado actual de implementación
+
+- `GET /api/v1` devuelve las rutas disponibles.
+- `GET /api/v1/clients`, `GET /api/v1/projects` y `GET /api/v1/meetings` devuelven listados.
+- `GET /api/v1/clients/{id}`, `GET /api/v1/projects/{id}` y `GET /api/v1/meetings/{id}` devuelven un elemento.
+- `POST /api/v1/clients`, `POST /api/v1/projects` y `POST /api/v1/meetings` crean elementos.
+- `PUT /api/v1/clients/{id}`, `PUT /api/v1/projects/{id}` y `PUT /api/v1/meetings/{id}` actualizan elementos.
+- `DELETE /api/v1/clients/{id}`, `DELETE /api/v1/projects/{id}` y `DELETE /api/v1/meetings/{id}` eliminan elementos.
+- `GET /api/v1/search?q=...` devuelve resultados semánticos sobre reuniones indexadas en Qdrant.
+
+

@@ -9,12 +9,5 @@ oscar-ai.local {
 		format console
 	}
 
-	@api path /api/*
-	handle @api {
-		reverse_proxy app:8080
-	}
-
-	handle {
-		reverse_proxy dashboard:3000
-	}
+	reverse_proxy app:8080
 }

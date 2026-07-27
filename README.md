@@ -41,6 +41,5 @@ El contenido de este repositorio describe la **arquitectura objetivo** de Oscar 
 - [docs/08-dashboard/UXPrinciples.md](docs/08-dashboard/UXPrinciples.md)
 - [docs/10-devops/ReleaseChecklist.md](docs/10-devops/ReleaseChecklist.md)
 - [docs/11-development/DocumentationGuide.md](docs/11-development/DocumentationGuide.md)
+- [docs/11-development/SessionLog-2026-07-27.md](docs/11-development/SessionLog-2026-07-27.md)
 - [docs/12-templates/README.md](docs/12-templates/README.md)
-
-# oscarAI
