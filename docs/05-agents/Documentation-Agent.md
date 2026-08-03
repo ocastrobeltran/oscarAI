@@ -59,6 +59,17 @@ Convertir conocimiento disperso en documentación técnica estructurada.
 4. Normalizar lenguaje, títulos y referencias.
 5. Marcar huecos de información o preguntas abiertas.
 
+## Contrato OpenClaw
+
+| Campo | Valor |
+| --- | --- |
+| Agent ID | `docs-agent` |
+| Name | Documentation & Knowledge Agent |
+| OpenClaw Tools | `search_knowledge`, `list_documents`, `list_meetings`, `list_projects` |
+| Endpoint REST | `/api/v1/agents/docs-agent/run` |
+| Input | `{"prompt": "..."}` o `{"query": "..."}` |
+| Output | `{"agent": "docs-agent", "prompt": "...", "answer": "...", "sources": [...]}` |
+
 ## Criterios de éxito
 
 - El documento es navegable y tiene una sola responsabilidad principal.
@@ -71,5 +82,6 @@ Convertir conocimiento disperso en documentación técnica estructurada.
 - Documento actualizado: arquitectura de integración.
 - Referencias cruzadas añadidas: ADR, API y seguridad.
 - Huecos detectados: política de reintentos y owner funcional.
+
 
 

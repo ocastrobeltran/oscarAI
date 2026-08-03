@@ -16,18 +16,21 @@ Cada agente debe declarar propósito, entradas, salidas, límites y criterios de
 | Constraints | Límites de actuación |
 | Success Criteria | Qué significa una ejecución correcta |
 
-## Reglas de diseño
+## Integración con OpenClaw y API REST
 
-- Un agente no debe asumir permisos de otro.
-- Un agente no debe persistir contexto fuera de los canales definidos.
-- El orquestador conserva la autoridad final sobre el flujo.
-- Las tareas compuestas deben devolver resultado consolidado y trazable.
+Los agentes se integran mediante manifiestos de OpenClaw (`openclaw.yaml`) y se exponen en la API REST para su descubrimiento y ejecución directa:
+
+- `GET /api/v1/agents`: Devuelve la lista de agentes registrados y sus herramientas asociadas.
+- `GET /api/v1/agents/{id}`: Devuelve la especificación y contrato de un agente en particular.
+- `POST /api/v1/agents/{id}/run`: Ejecuta una solicitud contra el agente, invocando las herramientas vectoriales de Qdrant y la base de datos relacional para consolidar una respuesta estructurada con citas.
 
 ## Referencias
 
+- [openclaw.yaml](../../openclaw.yaml)
+- [Documentation-Agent.md](Documentation-Agent.md)
 - [PM-Agent.md](PM-Agent.md)
 - [QA-Agent.md](QA-Agent.md)
 - [Meeting-Agent.md](Meeting-Agent.md)
 - [Communication-Agent.md](Communication-Agent.md)
-- [Documentation-Agent.md](Documentation-Agent.md)
 - [Legger-Agent.md](Legger-Agent.md)
+

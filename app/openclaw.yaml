@@ -1,0 +1,138 @@
+version: "1.0"
+name: "Oscar AI Agent Integration"
+description: "OpenClaw configuration manifest for Oscar AI platform tools and agents."
+
+server:
+  baseUrl: "http://localhost:8080"
+  schemaUrl: "http://localhost:8080/openapi.json"
+
+tools:
+  - name: list_clients
+    path: "/api/v1/clients"
+    method: GET
+    description: "Recupera la lista de todos los clientes registrados."
+
+  - name: list_projects
+    path: "/api/v1/projects"
+    method: GET
+    description: "Recupera la lista de proyectos y sus estados."
+
+  - name: list_meetings
+    path: "/api/v1/meetings"
+    method: GET
+    description: "Recupera la lista de reuniones registradas."
+
+  - name: list_documents
+    path: "/api/v1/documents"
+    method: GET
+    description: "Recupera la lista de documentos de conocimiento."
+
+  - name: create_document
+    path: "/api/v1/documents"
+    method: POST
+    description: "Crea un nuevo documento de conocimiento adjunto a un proyecto."
+
+  - name: ingest_document
+    path: "/api/v1/documents/ingest"
+    method: POST
+    description: "Ingesta y fragmenta automáticamente un documento extenso en trozos (chunks) con solapamiento para indexación vectorial."
+
+  - name: list_tasks
+    path: "/api/v1/tasks"
+    method: GET
+    description: "Recupera la lista de tareas asignadas a agentes o proyectos."
+
+  - name: create_task
+    path: "/api/v1/tasks"
+    method: POST
+    description: "Crea una nueva tarea asignada a un proyecto o agente."
+
+  - name: list_knowledge_items
+    path: "/api/v1/knowledge-items"
+    method: GET
+    description: "Recupera los artículos y guías curadas de la base de conocimiento."
+
+  - name: create_knowledge_item
+    path: "/api/v1/knowledge-items"
+    method: POST
+    description: "Crea un nuevo artículo o decisión curada en la base de conocimiento."
+
+  - name: list_memory_entries
+    path: "/api/v1/memory-entries"
+    method: GET
+    description: "Recupera las entradas de memoria episódica de conversaciones pasadas."
+
+  - name: sync_github_issues
+    path: "/api/v1/integrations/github/sync"
+    method: POST
+    description: "Sincroniza e ingesta los issues y pull requests de un repositorio de GitHub en la base de conocimiento."
+
+  - name: sync_azure_devops
+    path: "/api/v1/integrations/azure-devops/sync"
+    method: POST
+    description: "Sincroniza e ingesta los Work Items y tareas de Azure DevOps en la base de conocimiento."
+
+  - name: ingest_email
+    path: "/api/v1/integrations/outlook/ingest"
+    method: POST
+    description: "Ingesta un correo electrónico de Outlook en la base de conocimiento vectorial."
+
+  - name: import_chatgpt_conversations
+    path: "/api/v1/integrations/chatgpt/import"
+    method: POST
+    description: "Importa e indexa un archivo de exportación de ChatGPT (conversations.json, Zip o Markdown) en la base de conocimiento vectorial."
+
+  - name: analyze_image_with_gemini
+    path: "/api/v1/documents/analyze-image"
+    method: POST
+    description: "Analiza una imagen técnica (diagramas de arquitectura, capturas de pantalla, esquemas) usando Gemini Vision, extrae OCR y explicaciones y la indexa en Qdrant."
+
+  - name: send_teams_alert
+    path: "/api/v1/integrations/teams/alert"
+    method: POST
+    description: "Envía una notificación proactiva o alerta estructurada con formato Adaptive Card a un canal de Microsoft Teams."
+
+  - name: search_knowledge
+    path: "/api/v1/search"
+    method: GET
+    description: "Ejecuta una búsqueda semántica sobre la base de conocimiento vectorial de Qdrant (reuniones, documentos, artículos curados y memoria)."
+    parameters:
+      - name: q
+        type: string
+        required: true
+      - name: type
+        type: string
+        enum: ["all", "meetings", "documents", "knowledge_items", "memory_entries"]
+        default: "all"
+
+agents:
+  - id: "docs-agent"
+    name: "Documentation & Knowledge Agent"
+    description: "Agente especializado en responder consultas contextuales, recuperar actas de reuniones y buscar guías de arquitectura."
+    capabilities:
+      - "search_knowledge"
+      - "list_documents"
+      - "list_meetings"
+      - "list_projects"
+      - "list_knowledge_items"
+    constraints:
+      - "Priorizar información oficial almacenada en Qdrant y PostgreSQL."
+      - "Incluir citas a las fuentes recuperadas (ID y título)."
+
+  - id: "pm-agent"
+    name: "Project Management Agent"
+    description: "Agente especializado en seguimiento de proyectos, clientes, tareas y estados de trabajo."
+    capabilities:
+      - "list_projects"
+      - "list_clients"
+      - "list_meetings"
+      - "list_tasks"
+      - "create_task"
+
+  - id: "qa-agent"
+    name: "QA & Compliance Agent"
+    description: "Agente especializado en auditoría y verificación de requisitos de calidad."
+    capabilities:
+      - "search_knowledge"
+      - "list_documents"
+      - "list_knowledge_items"

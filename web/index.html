@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscar AI | Executive Project OS & Knowledge Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- TOP HEADER -->
+        <header class="main-header">
+            <div class="brand-container">
+                <div class="logo-icon">
+                    <div class="glow-orb"></div>
+                    <span class="logo-letter">O</span>
+                </div>
+                <div class="brand-text">
+                    <h1>Oscar AI <span class="badge-v1">OS v1.0</span></h1>
+                    <p class="subtitle">Gestión Inteligente de Proyectos & Memoria Organizacional</p>
+                </div>
+            </div>
+
+            <div class="system-stats">
+                <div class="stat-pill">
+                    <span class="stat-label">Estado</span>
+                    <span class="stat-val status-active"><span class="pulse-dot"></span> Operativo</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Proyectos</span>
+                    <span class="stat-val" id="stat-projects">6</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Vectores Qdrant</span>
+                    <span class="stat-val" id="stat-vectors">110+</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Agentes</span>
+                    <span class="stat-val">3 Activos</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="nav-tabs">
+            <button class="nav-btn active" data-tab="overview">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Resumen General</span>
+            </button>
+            <button class="nav-btn" data-tab="agent">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Consola de Agentes RAG</span>
+            </button>
+            <button class="nav-btn" data-tab="knowledge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span>Base de Conocimiento</span>
+            </button>
+            <button class="nav-btn" data-tab="integrations">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1"></path><path d="M18 8l4 4-4 4"></path><path d="M22 12H9"></path></svg>
+                <span>Conectores Externos</span>
+            </button>
+            <button class="nav-btn" data-tab="audit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Auditoría & Seguridad</span>
+            </button>
+        </nav>
+
+        <!-- MAIN CONTENT PANELS -->
+        <main class="content-area">
+            <!-- TAB 1: OVERVIEW -->
+            <section id="tab-overview" class="tab-panel active">
+                <div class="overview-grid">
+                    <!-- PROJECTS SECTION -->
+                    <div class="glass-card full-width">
+                        <div class="card-header">
+                            <h2>Proyectos Activos & Estado Operativo</h2>
+                            <span class="badge-tag">Legger PM</span>
+                        </div>
+                        <div class="projects-list" id="projects-container">
+                            <div class="loading-spinner">Cargando proyectos...</div>
+                        </div>
+                    </div>
+
+                    <!-- RECENT TASKS & MEETINGS -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3>Tareas de Agentes</h3>
+                        </div>
+                        <div class="tasks-list" id="tasks-container">
+                            <div class="loading-spinner">Cargando tareas...</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3>Reuniones & Actas</h3>
+                        </div>
+                        <div class="meetings-list" id="meetings-container">
+                            <div class="loading-spinner">Cargando reuniones...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: AGENT CONSOLE -->
+            <section id="tab-agent" class="tab-panel">
+                <div class="agent-workspace">
+                    <!-- AGENT SELECTOR CARD -->
+                    <div class="glass-card agent-selector-card">
+                        <div class="card-header">
+                            <h2>Consola de Ejecución de Agentes</h2>
+                        </div>
+                        <div class="agent-chips">
+                            <button class="agent-chip active" data-agent="docs-agent">
+                                <span class="chip-avatar">📚</span>
+                                <div class="chip-info">
+                                    <strong>Docs & Knowledge Agent</strong>
+                                    <small>Consultas técnicas, ADRs y Grafo de Conocimiento</small>
+                                </div>
+                            </button>
+                            <button class="agent-chip" data-agent="pm-agent">
+                                <span class="chip-avatar">📊</span>
+                                <div class="chip-info">
+                                    <strong>Project Management Agent</strong>
+                                    <small>Estado de proyectos, riesgos y clientes</small>
+                                </div>
+                            </button>
+                            <button class="agent-chip" data-agent="qa-agent">
+                                <span class="chip-avatar">🔍</span>
+                                <div class="chip-info">
+                                    <strong>QA & Compliance Agent</strong>
+                                    <small>Auditoría de calidad y criterios de aceptación</small>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CHAT INTERFACE -->
+                    <div class="glass-card chat-card">
+                        <div class="chat-history" id="chat-history">
+                            <div class="chat-msg system">
+                                <div class="msg-avatar">🤖</div>
+                                <div class="msg-body">
+                                    <p>Hola Oscar. Soy <strong>Oscar AI</strong>. Tengo acceso a <strong>4 colecciones vectoriales en Qdrant</strong> (documentos, artículos curados, actas de reuniones y memoria episódica) y al <strong>Grafo Organizacional de Legger</strong>.</p>
+                                    <p class="suggestion-title">Prompts sugeridos:</p>
+                                    <div class="suggestions">
+                                        <button class="prompt-btn">¿Cuáles son las prioridades y responsabilidades de Oscar Castro?</button>
+                                        <button class="prompt-btn">¿Quién aprobó el alcance de L3721 y qué incidencias hay en GitHub?</button>
+                                        <button class="prompt-btn">¿Cuál es el estado de los proyectos BioD y Colsubsidio?</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-bar">
+                            <input type="text" id="chat-input" placeholder="Haz una pregunta o solicita un resumen operativo..." autocomplete="off">
+                            <button id="send-btn" class="glow-btn">
+                                <span>Ejecutar Agente</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: KNOWLEDGE BASE -->
+            <section id="tab-knowledge" class="tab-panel">
+                <div class="knowledge-grid">
+                    <!-- DOCUMENT INGESTION FORM -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h2>Ingesta de Documentos con Chunking</h2>
+                        </div>
+                        <form id="ingest-form" class="form-grid">
+                            <div class="form-group">
+                                <label for="ingest-project">Proyecto Asociado</label>
+                                <select id="ingest-project" required>
+                                    <option value="1">OSCAR-001 - Oscar AI Platform</option>
+                                    <option value="2">L3721 - Colsubsidio CIAM</option>
+                                    <option value="3">L3671 - BioD Asistentes Virtuales</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ingest-title">Título del Documento</label>
+                                <input type="text" id="ingest-title" placeholder="Ej: Manual de Arquitectura L3721" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ingest-chunk-size">Tamaño de Chunk (chars)</label>
+                                    <input type="number" id="ingest-chunk-size" value="500">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingest-chunk-overlap">Solapamiento (chars)</label>
+                                    <input type="number" id="ingest-chunk-overlap" value="50">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ingest-content">Contenido Completo (Markdown / Texto)</label>
+                                <textarea id="ingest-content" rows="6" placeholder="Pega el contenido extenso aquí..." required></textarea>
+                            </div>
+                            <button type="submit" class="glow-btn full-width">Procesar & Vectorizar en Qdrant</button>
+                        </form>
+                    </div>
+
+                    <!-- KNOWLEDGE ITEMS BROWSER -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h2>Artículos Curados en Qdrant</h2>
+                        </div>
+                        <div class="knowledge-items-list" id="knowledge-items-container">
+                            <div class="loading-spinner">Cargando base de conocimiento...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: INTEGRATIONS -->
+            <section id="tab-integrations" class="tab-panel">
+                <div class="integrations-grid">
+                    <!-- GITHUB CARD -->
+                    <div class="glass-card integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon github-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            </div>
+                            <div>
+                                <h3>GitHub Issues & PRs</h3>
+                                <p class="connector-status" id="status-github">Modo: Mock / Demo local</p>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Sincroniza e ingesta automáticamente issues y pull requests desde repositorios de GitHub en la base de conocimiento vectorial.</p>
+                        <button class="action-btn" id="sync-github-btn">Sincronizar Issues (legger/platform-l3721)</button>
+                    </div>
+
+                    <!-- AZURE DEVOPS CARD -->
+                    <div class="glass-card integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon devops-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M0 8.863l2.846-2.585L16.2 3.123v17.754L0 15.137V8.863zm24-3.791l-6.93 1.341v11.173L24 18.927V5.072z"/></svg>
+                            </div>
+                            <div>
+                                <h3>Azure DevOps Work Items</h3>
+                                <p class="connector-status" id="status-devops">Modo: Mock / Demo local</p>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Importa Historias de Usuario, Bugs y Tareas asignadas en los tableros de Azure DevOps para seguimiento de PM.</p>
+                        <button class="action-btn" id="sync-devops-btn">Sincronizar Board (legger-org/L3721)</button>
+                    </div>
+
+                    <!-- OUTLOOK CARD -->
+                    <div class="glass-card integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon outlook-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M1 17.5V6.5L11 1v22L1 17.5zm12 3.5V3l10 2v14l-10 2z"/></svg>
+                            </div>
+                            <div>
+                                <h3>Microsoft Outlook Email</h3>
+                                <p class="connector-status" id="status-outlook">Modo: Mock / Demo local</p>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Ingesta correos de clientes y actas aprobadas preservando el contexto histórico por proyecto.</p>
+                        <button class="action-btn" id="ingest-email-btn">Simular Ingesta Correo Aprobación</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: AUDIT LOGS -->
+            <section id="tab-audit" class="tab-panel">
+                <div class="glass-card full-width">
+                    <div class="card-header">
+                        <h2>Registro de Auditoría de Peticiones (PostgreSQL `audit_events`)</h2>
+                        <button id="refresh-audit-btn" class="refresh-btn">🔄 Actualizar Log</button>
+                    </div>
+                    <div class="audit-table-wrapper">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Método</th>
+                                    <th>Endpoint</th>
+                                    <th>Status</th>
+                                    <th>Agente / Header</th>
+                                    <th>IP Cliente</th>
+                                    <th>Timestamp UTC</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body">
+                                <tr><td colspan="7" class="loading-spinner">Cargando eventos de auditoría...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- NOTIFICATION TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
